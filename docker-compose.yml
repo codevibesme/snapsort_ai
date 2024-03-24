@@ -1,0 +1,77 @@
+version: "3.9"
+
+services:
+  db:
+    container_name: snapsort-db
+    image: mysql:latest
+    restart: always
+    environment:
+      MYSQL_DATABASE: snapsort
+      MYSQL_USER: snapsort
+      MYSQL_PASSWORD: snapsort
+      MYSQL_ROOT_PASSWORD: snapsort2002
+    ports:
+      - 5432:3306
+    expose:
+      - 3306
+    volumes:
+      - snapsort-db:/var/lib/mysql
+      - ./mysql-dump:/docker-entrypoint-initdb.d
+    networks:
+      - snapsort-network
+
+  minio:
+    container_name: snapsort-minio
+    image: minio/minio:latest
+    ports:
+      - 9000:9000
+      - 9001:9001
+    networks:
+      - snapsort-network
+    volumes:
+      - minio_data:/data
+    command: server --console-address ":9001" /data
+    environment:
+      - MINIO_ROOT_USER=snapsort
+      - MINIO_ROOT_PASSWORD=snapsort
+      - MINIO_SERVER_URL=http://localhost:9000
+    depends_on:
+      - db
+
+  server:
+    build:
+      context: ./server
+      dockerfile: Dockerfile
+    container_name: snapsort-server
+    restart: always
+    ports:
+      - 8000:8000
+    expose:
+      - 8000
+    depends_on:
+      - db
+      - minio
+    networks:
+      - snapsort-network
+
+  pgadmin:
+    image: dpage/pgadmin4
+    restart: always
+    container_name: snapsort-pgadmin
+    environment:
+      - PGADMIN_DEFAULT_EMAIL=admin@snapsort.com
+      - PGADMIN_DEFAULT_PASSWORD=snapadmin2002
+    ports:
+      - "5050:80"
+    depends_on:
+      - db
+    networks:
+      - snapsort-network
+
+volumes:
+  snapsort-db:
+  minio_data:
+
+networks:
+  snapsort-network:
+    driver: bridge
