@@ -21,7 +21,7 @@ class UsersEntity {
   email: string;
 
   @ApiProperty(helper.getApiProperty('password'))
-  @Column({ type: 'varchar', length: 32 })
+  @Column({ type: 'varchar', length: 64 })
   password: string;
 
   @ApiProperty(helper.getApiProperty('phone'))
@@ -33,7 +33,7 @@ class UsersEntity {
   name: string;
 
   @ApiProperty(helper.getApiProperty('role'))
-  @Column({ enum: ['admin', 'user'] })
+  @Column({ type: 'enum', enum: Role })
   role: Role;
 
   @ApiProperty(helper.getApiProperty('verified'))

@@ -9,7 +9,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import UsersEntity from './users.entity';
 import { Repository } from 'typeorm';
 import { Role } from 'src/types/users';
-import bcrypt from 'bcrypt';
+import * as bcrypt from 'bcrypt';
 import { JwtHelpersService } from '../helpers/jwt.helpers.service';
 
 @Injectable()
@@ -39,7 +39,7 @@ export class UsersService {
     const hashedPassword = await bcrypt.hash(createUserDto.password, salt);
     createUserDto.password = hashedPassword;
 
-    if (user.role === Role.ADMIN) {
+    if (createUserDto.role === Role.ADMIN) {
       newUser = this.usersRepository.create({
         ...createUserDto,
         verified: true,
@@ -61,19 +61,18 @@ export class UsersService {
       .orWhere('users.username = :username', { username })
       .getOne();
 
+    console.log(user);
     if (!user) {
       throw new NotFoundException('User not found');
     }
 
-    const isMatch = await bcrypt.compare(user.password, password);
-    if (isMatch) {
-      const token = await this.jwt.generateToken(
-        { userId: user.id },
-        user.role,
-      );
-      return token;
-    } else {
+    const isMatch = await bcrypt.compare(password, user.password);
+    if (!isMatch) {
+      console.log(isMatch);
       throw new UnauthorizedException('Invalid credentials');
     }
+
+    const token = await this.jwt.generateToken({ userId: user.id }, '1d');
+    return token;
   }
 }
