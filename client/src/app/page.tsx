@@ -1,5 +1,18 @@
-import Image from "next/image";
+import HeroSection from '@/components/HomePage/HeroSection/HeroSection';
+import { StickyScrollRevealDemo } from '@/components/HomePage/StickyScrollRevealDemo/StickyScrollRevealDemo';
+import React from 'react';
 
-export default function Home() {
-  return <div>Hello World</div>;
-}
+
+const Home: React.FC = () => {
+
+ 
+  return (
+    <div>
+      <HeroSection />
+      <StickyScrollRevealDemo />
+  
+    </div>
+  );
+};
+
+export default Home;
