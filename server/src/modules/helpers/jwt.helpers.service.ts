@@ -3,7 +3,7 @@ import { JwtService } from '@nestjs/jwt';
 
 @Injectable()
 export class JwtHelpersService {
-  constructor(private readonly jwt: JwtService) {}
+  constructor(private readonly jwt: JwtService) { }
 
   async generateToken(payload: Object, expiresIn: string): Promise<string> {
     return this.jwt.signAsync(payload, { expiresIn: expiresIn });
@@ -21,7 +21,8 @@ export class JwtHelpersService {
       const decodedToken = await this.jwt.verifyAsync(token);
       if (
         (tokenFor === 'admin' && !decodedToken.adminId) ||
-        (tokenFor === 'user' && !decodedToken.userId)
+        (tokenFor === 'user' && !decodedToken.userId) ||
+        (tokenFor === 'email' && !decodedToken.email)
       ) {
         throw new UnauthorizedException('Invalid token');
       }

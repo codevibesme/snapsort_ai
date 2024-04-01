@@ -11,4 +11,4 @@ import { JwtHelpersService } from './jwt.helpers.service';
   providers: [JwtHelpersService],
   exports: [JwtHelpersService],
 })
-export default class JWTHelpersModule {}
+export default class JWTHelpersModule { };

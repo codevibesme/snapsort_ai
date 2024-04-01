@@ -2,7 +2,7 @@ import { Injectable } from '@nestjs/common';
 
 @Injectable()
 export class MiscHelpersService {
-  constructor() {}
+  constructor() { }
 
   getApiProperty(propertyName: string): Object {
     interface ApiProperties {
@@ -16,7 +16,7 @@ export class MiscHelpersService {
         example: '1',
       },
 
-      userName: {
+      name: {
         description: 'Name',
         example: 'Bipasha Roy',
       },
@@ -28,7 +28,7 @@ export class MiscHelpersService {
 
       email: {
         description: 'Email',
-        example: 'bipasha@codevibes.com',
+        example: 'bipasha1413@gmail.com',
       },
 
       password: {
@@ -43,17 +43,17 @@ export class MiscHelpersService {
 
       role: {
         description: 'Role',
-        example: 'admin / user',
+        example: 'user',
       },
 
-      subscribed: {
+      isSubscribed: {
         description: 'Subscription Status',
-        example: true,
+        example: false,
       },
 
-      verified: {
+      isVerified: {
         description: 'Verification Status',
-        example: true,
+        example: false,
       },
     };
 
