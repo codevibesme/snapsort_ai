@@ -55,8 +55,17 @@ export class MiscHelpersService {
         description: 'Verification Status',
         example: false,
       },
-    };
 
+      files: {
+        description: 'Multiple files',
+        type: 'array',
+        items: {
+          type: 'string',
+          format: 'binary',
+        },
+      },
+    };
+    
     return apiProperties[propertyName];
   }
 }
